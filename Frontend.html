@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HTML, CSS & JS — Placement Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #16161a;
+    --surface2: #1e1e24;
+    --border: #2a2a35;
+    --accent: #7c6af7;
+    --accent2: #38d9a9;
+    --accent3: #f7c948;
+    --text: #e8e6f0;
+    --muted: #8884a0;
+    --code-bg: #111118;
+    --html: #e06c4a;
+    --css: #4fa9ff;
+    --js: #f7c948;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1a1730 0%, #0d1a14 50%, #1a1508 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem 2rem;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { max-width: 960px; margin: 0 auto; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(124,106,247,0.15); border: 1px solid rgba(124,106,247,0.3); color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
+  .header h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; }
+  .header h1 span.html { color: var(--html); }
+  .header h1 span.css { color: var(--css); }
+  .header h1 span.js { color: var(--js); }
+  .header-meta { margin-top: 10px; font-size: 13px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+  .header-meta span { display: flex; align-items: center; gap: 5px; }
+
+  /* TAB NAV */
+  .tabs { display: flex; gap: 4px; margin-top: 18px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+  .tab-btn {
+    padding: 8px 18px; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+    background: transparent; border: none; border-bottom: 2px solid transparent;
+    color: var(--muted); cursor: pointer; transition: all 0.2s; border-radius: 6px 6px 0 0;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+  .tab-btn.active { color: var(--text); border-bottom: 2px solid var(--accent); }
+  .tab-btn.html-tab.active { border-color: var(--html); color: var(--html); }
+  .tab-btn.css-tab.active { border-color: var(--css); color: var(--css); }
+  .tab-btn.js-tab.active { border-color: var(--js); color: var(--js); }
+
+  /* CONTENT */
+  .content { max-width: 960px; margin: 0 auto; padding: 2rem; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SECTION */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 1rem 1.25rem; cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .section-header:hover { background: rgba(255,255,255,0.03); }
+  .section-header.open { border-bottom-color: var(--border); }
+  .section-num {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .html-num { background: rgba(224,108,74,0.15); color: var(--html); }
+  .css-num { background: rgba(79,169,255,0.15); color: var(--css); }
+  .js-num { background: rgba(247,201,72,0.15); color: var(--js); }
+  .section-title { font-size: 15px; font-weight: 700; flex: 1; }
+  .section-arrow { color: var(--muted); font-size: 18px; transition: transform 0.25s; }
+  .section-header.open .section-arrow { transform: rotate(90deg); }
+  .section-body { padding: 1.25rem; display: none; }
+  .section-body.open { display: block; }
+
+  /* CONTENT ELEMENTS */
+  .intro-text { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; border-left: 3px solid var(--accent); padding-left: 12px; }
+  .intro-text.html-border { border-color: var(--html); }
+  .intro-text.css-border { border-color: var(--css); }
+  .intro-text.js-border { border-color: var(--js); }
+
+  h3 { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin: 1.2rem 0 0.7rem; }
+  h3:first-child { margin-top: 0; }
+
+  ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  ul li { font-size: 14px; line-height: 1.6; padding-left: 18px; position: relative; color: var(--text); }
+  ul li::before { content: '›'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  /* Interview Q&A */
+  .qa-block { margin-top: 1rem; }
+  .qa-item { margin-bottom: 10px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .qa-q { padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--accent2); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .qa-q:hover { background: rgba(56,217,169,0.05); }
+  .qa-q .arrow { transition: transform 0.2s; color: var(--muted); font-size: 14px; }
+  .qa-q.open .arrow { transform: rotate(90deg); }
+  .qa-a { display: none; padding: 10px 14px 12px; font-size: 13px; line-height: 1.7; color: var(--muted); border-top: 1px solid var(--border); }
+  .qa-a.open { display: block; }
+
+  /* Code */
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--code-bg); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; color: var(--accent3); }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 0.8rem 0; overflow-x: auto; }
+  pre code { background: transparent; border: none; padding: 0; font-size: 12.5px; color: #c9d1d9; line-height: 1.6; }
+  .kw { color: #c792ea; } .fn { color: #82aaff; } .str { color: #c3e88d; }
+  .cm { color: #546e7a; font-style: italic; } .num { color: #f78c6c; }
+  .tag { color: var(--html); } .attr { color: var(--css); } .val { color: var(--js); }
+
+  /* Tags / chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+  .chip { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.3px; }
+  .chip-purple { background: rgba(124,106,247,0.15); color: var(--accent); border: 1px solid rgba(124,106,247,0.25); }
+  .chip-green { background: rgba(56,217,169,0.12); color: var(--accent2); border: 1px solid rgba(56,217,169,0.25); }
+  .chip-yellow { background: rgba(247,201,72,0.12); color: var(--js); border: 1px solid rgba(247,201,72,0.25); }
+  .chip-red { background: rgba(224,108,74,0.12); color: var(--html); border: 1px solid rgba(224,108,74,0.25); }
+  .chip-blue { background: rgba(79,169,255,0.12); color: var(--css); border: 1px solid rgba(79,169,255,0.25); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0.8rem 0; }
+  th { background: var(--code-bg); color: var(--muted); font-weight: 700; text-align: left; padding: 8px 12px; border: 1px solid var(--border); font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; }
+  td { padding: 7px 12px; border: 1px solid var(--border); line-height: 1.5; vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* Tip box */
+  .tip { background: rgba(247,201,72,0.07); border: 1px solid rgba(247,201,72,0.25); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #e8d99a; margin: 0.8rem 0; line-height: 1.6; }
+  .tip strong { color: var(--js); }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+
+  .overview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  .ov-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+  .ov-card .ov-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .ov-card .ov-val { font-size: 22px; font-weight: 800; }
+  .ov-card .ov-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  @media (max-width: 600px) {
+    .header { padding: 1.5rem 1rem 1rem; }
+    .header h1 { font-size: 1.35rem; }
+    .content { padding: 1rem; }
+    .overview-grid { grid-template-columns: 1fr 1fr; }
+    .tabs { gap: 2px; }
+    .tab-btn { padding: 7px 10px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="badge">📺 Sheryians Coding School · Sarthak Sharma</div>
+    <h1>Learn <span class="html">HTML</span>, <span class="css">CSS</span> &amp; <span class="js">JavaScript</span> — Placement Notes</h1>
+    <div class="header-meta">
+      <span>⏱ 3h 53m</span>
+      <span>📅 Sept 2024</span>
+      <span>🎯 MERN Stack Basics</span>
+      <span>👤 Placement-Ready</span>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+      <button class="tab-btn html-tab" onclick="switchTab('html',this)">HTML</button>
+      <button class="tab-btn css-tab" onclick="switchTab('css',this)">CSS</button>
+      <button class="tab-btn js-tab" onclick="switchTab('js',this)">JavaScript</button>
+      <button class="tab-btn" onclick="switchTab('interview',this)">🎯 Interview Q&amp;A</button>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ===== OVERVIEW ===== -->
+<div id="tab-overview" class="tab-panel active">
+  <div class="overview-grid">
+    <div class="ov-card"><div class="ov-label" style="color:var(--html)">HTML</div><div class="ov-val" style="color:var(--html)">Structure</div><div class="ov-sub">Skeleton of the web page</div></div>
+    <div class="ov-card"><div class="ov-label" style="color:var(--css)">CSS</div><div class="ov-val" style="color:var(--css)">Style</div><div class="ov-sub">Visual design & layout</div></div>
+    <div class="ov-card"><div class="ov-label" style="color:var(--js)">JS</div><div class="ov-val" style="color:var(--js)">Behaviour</div><div class="ov-sub">Logic, interactivity, DOM</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num html-num">📌</div>
+      <div class="section-title">What is the MERN Stack?</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <p class="intro-text">MERN stands for <strong>MongoDB, Express.js, React.js, Node.js</strong> — a full-stack JavaScript framework for building modern web apps end-to-end. This video covers the frontend fundamentals needed before diving deeper.</p>
+      <table>
+        <tr><th>Layer</th><th>Technology</th><th>Role</th></tr>
+        <tr><td>Database</td><td><code>MongoDB</code></td><td>NoSQL database — stores JSON-like documents</td></tr>
+        <tr><td>Backend</td><td><code>Express.js</code></td><td>Web framework for Node.js — handles routing & APIs</td></tr>
+        <tr><td>Frontend</td><td><code>React.js</code></td><td>UI library — component-based view layer</td></tr>
+        <tr><td>Runtime</td><td><code>Node.js</code></td><td>JS runtime — runs JavaScript outside the browser</td></tr>
+      </table>
+      <div class="tip"><strong>🎯 Interview tip:</strong> Always explain MERN as "a JavaScript-only stack where the same language is used on both client and server, reducing context switching and improving team efficiency."</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num html-num">🌐</div>
+      <div class="section-title">How the Web Works — Browser Basics</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <ul>
+        <li>User types a URL → DNS resolves it to an IP → HTTP request sent to server</li>
+        <li>Server responds with HTML → browser parses it → builds the <strong>DOM tree</strong></li>
+        <li>CSS is parsed → <strong>CSSOM</strong> is built → merged with DOM to create the <strong>Render Tree</strong></li>
+        <li>JavaScript is fetched and executed → can manipulate DOM and CSSOM</li>
+        <li>Browser performs <strong>Layout → Paint → Composite</strong> to display the page</li>
+      </ul>
+      <div class="tip"><strong>🎯 Interview tip:</strong> Know the critical rendering path — it's a common performance interview question.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HTML ===== -->
+<div id="tab-html" class="tab-panel">
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num html-num">01</div>
+      <div class="section-title">What is HTML?</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <p class="intro-text html-border">HTML (HyperText Markup Language) is the standard language for creating web pages. It describes the structure of a page using elements represented by tags.</p>
+      <ul>
+        <li>HTML is <strong>not</strong> a programming language — it's a <em>markup language</em></li>
+        <li>Every HTML document starts with <code>&lt;!DOCTYPE html&gt;</code> — tells browser to use HTML5</li>
+        <li>Root element is <code>&lt;html&gt;</code>, containing <code>&lt;head&gt;</code> (metadata) and <code>&lt;body&gt;</code> (visible content)</li>
+        <li>Elements are made of: <strong>Opening tag + Content + Closing tag</strong></li>
+        <li>Some elements are <strong>self-closing</strong>: <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;input&gt;</code></li>
+      </ul>
+      <pre><code><span class="cm">&lt;!-- Basic HTML structure --&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span>Page Title<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+  <span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Hello World<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num html-num">02</div>
+      <div class="section-title">HTML Tags — Complete Reference</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <h3>Headings & Text</h3>
+      <table>
+        <tr><th>Tag</th><th>Purpose</th><th>Note</th></tr>
+        <tr><td><code>&lt;h1&gt; – &lt;h6&gt;</code></td><td>Headings (largest to smallest)</td><td>Only one <code>&lt;h1&gt;</code> per page (SEO)</td></tr>
+        <tr><td><code>&lt;p&gt;</code></td><td>Paragraph</td><td>Block-level element</td></tr>
+        <tr><td><code>&lt;span&gt;</code></td><td>Inline text container</td><td>No semantic meaning, inline</td></tr>
+        <tr><td><code>&lt;strong&gt;</code></td><td>Bold + semantic importance</td><td>vs <code>&lt;b&gt;</code> which is just visual bold</td></tr>
+        <tr><td><code>&lt;em&gt;</code></td><td>Italic + emphasis</td><td>vs <code>&lt;i&gt;</code> which is just visual italic</td></tr>
+        <tr><td><code>&lt;br&gt;</code></td><td>Line break</td><td>Self-closing</td></tr>
+        <tr><td><code>&lt;hr&gt;</code></td><td>Horizontal rule</td><td>Thematic break</td></tr>
+      </table>
+
+      <h3>Links & Media</h3>
+      <table>
+        <tr><th>Tag</th><th>Key Attributes</th><th>Note</th></tr>
+        <tr><td><code>&lt;a&gt;</code></td><td><code>href</code>, <code>target</code></td><td><code>target="_blank"</code> opens in new tab</td></tr>
+        <tr><td><code>&lt;img&gt;</code></td><td><code>src</code>, <code>alt</code>, <code>width</code>, <code>height</code></td><td><code>alt</code> is mandatory for accessibility</td></tr>
+        <tr><td><code>&lt;video&gt;</code></td><td><code>src</code>, <code>controls</code>, <code>autoplay</code></td><td>Needs <code>controls</code> for user playback</td></tr>
+        <tr><td><code>&lt;audio&gt;</code></td><td><code>src</code>, <code>controls</code></td><td>Same as video</td></tr>
+      </table>
+
+      <h3>Lists</h3>
+      <ul>
+        <li><code>&lt;ul&gt;</code> — Unordered list (bullets) → contains <code>&lt;li&gt;</code> items</li>
+        <li><code>&lt;ol&gt;</code> — Ordered list (numbered) → contains <code>&lt;li&gt;</code> items</li>
+        <li><code>&lt;dl&gt;</code> — Definition list → uses <code>&lt;dt&gt;</code> (term) and <code>&lt;dd&gt;</code> (description)</li>
+      </ul>
+
+      <h3>Tables</h3>
+      <pre><code><span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;thead&gt;&lt;tr&gt;&lt;th&gt;</span>Name<span class="tag">&lt;/th&gt;&lt;th&gt;</span>Age<span class="tag">&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>
+    <span class="tag">&lt;tr&gt;&lt;td&gt;</span>Alice<span class="tag">&lt;/td&gt;&lt;td&gt;</span>25<span class="tag">&lt;/td&gt;&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span></code></pre>
+      <div class="tip"><strong>🎯 Interview tip:</strong> Know the difference between <code>&lt;th&gt;</code> (table header — bold, centered by default) and <code>&lt;td&gt;</code> (table data). Also know <code>colspan</code> and <code>rowspan</code> attributes.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num html-num">03</div>
+      <div class="section-title">Semantic HTML</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <p class="intro-text html-border">Semantic elements clearly describe their meaning both to the browser and the developer. They improve SEO and accessibility.</p>
+      <table>
+        <tr><th>Semantic Tag</th><th>Meaning</th></tr>
+        <tr><td><code>&lt;header&gt;</code></td><td>Top section — logo, nav, intro</td></tr>
+        <tr><td><code>&lt;nav&gt;</code></td><td>Navigation links</td></tr>
+        <tr><td><code>&lt;main&gt;</code></td><td>Primary content of the page (only one per page)</td></tr>
+        <tr><td><code>&lt;section&gt;</code></td><td>Thematic grouping of content with a heading</td></tr>
+        <tr><td><code>&lt;article&gt;</code></td><td>Self-contained content (blog post, news item)</td></tr>
+        <tr><td><code>&lt;aside&gt;</code></td><td>Sidebar or tangentially related content</td></tr>
+        <tr><td><code>&lt;footer&gt;</code></td><td>Bottom section — copyright, links</td></tr>
+        <tr><td><code>&lt;figure&gt;</code> / <code>&lt;figcaption&gt;</code></td><td>Images with captions</td></tr>
+      </table>
+      <div class="tip"><strong>🎯 Interview tip:</strong> "Semantic HTML helps screen readers, search engines, and other tools understand your content. <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> have no semantic value."</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num html-num">04</div>
+      <div class="section-title">HTML Forms</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <p class="intro-text html-border">Forms collect user input and send it to a server. Key attributes: <code>action</code> (URL to send data) and <code>method</code> (GET or POST).</p>
+      <pre><code><span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"/submit"</span> <span class="attr">method</span>=<span class="val">"POST"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"name"</span><span class="tag">&gt;</span>Name:<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">id</span>=<span class="val">"name"</span> <span class="attr">name</span>=<span class="val">"name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+  
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span> <span class="attr">placeholder</span>=<span class="val">"Email"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"password"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"checkbox"</span><span class="tag">&gt;</span> Remember me
+  <span class="tag">&lt;select&gt;&lt;option&gt;</span>Option 1<span class="tag">&lt;/option&gt;&lt;/select&gt;</span>
+  <span class="tag">&lt;textarea</span> <span class="attr">rows</span>=<span class="val">"4"</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span>Submit<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span></code></pre>
+      <table>
+        <tr><th>Input Type</th><th>Use Case</th></tr>
+        <tr><td><code>text</code></td><td>Plain text input</td></tr>
+        <tr><td><code>email</code></td><td>Validates email format</td></tr>
+        <tr><td><code>password</code></td><td>Hides characters</td></tr>
+        <tr><td><code>number</code></td><td>Numeric input with min/max</td></tr>
+        <tr><td><code>checkbox</code></td><td>True/false toggle</td></tr>
+        <tr><td><code>radio</code></td><td>One-of-many selection</td></tr>
+        <tr><td><code>file</code></td><td>File upload</td></tr>
+        <tr><td><code>range</code></td><td>Slider</td></tr>
+        <tr><td><code>date</code></td><td>Date picker</td></tr>
+        <tr><td><code>hidden</code></td><td>Invisible data passed to server</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num html-num">05</div>
+      <div class="section-title">Block vs Inline Elements & DOM</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <table>
+        <tr><th></th><th>Block Elements</th><th>Inline Elements</th></tr>
+        <tr><td>Behaviour</td><td>Start on a new line, take full width</td><td>Flow within text, take only needed width</td></tr>
+        <tr><td>Examples</td><td><code>div, p, h1–h6, ul, table, section</code></td><td><code>span, a, img, strong, em, input</code></td></tr>
+        <tr><td>Width/Height</td><td>Can be set</td><td>Cannot be set (use <code>display: inline-block</code>)</td></tr>
+      </table>
+      <hr class="divider">
+      <h3>The DOM (Document Object Model)</h3>
+      <ul>
+        <li>The DOM is a tree-like representation of the HTML document in memory</li>
+        <li>Every HTML element becomes a <strong>node</strong> in the DOM tree</li>
+        <li>JavaScript uses the DOM API to <strong>read, create, update, and delete</strong> elements</li>
+        <li>The root is <code>document</code> → children are <code>html</code> → <code>head</code>, <code>body</code> etc.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CSS ===== -->
+<div id="tab-css" class="tab-panel">
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num css-num">01</div>
+      <div class="section-title">CSS Basics — Selectors & Properties</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <p class="intro-text css-border">CSS (Cascading Style Sheets) controls the visual presentation of HTML. Styles can be applied inline, via a <code>&lt;style&gt;</code> tag, or via an external <code>.css</code> file (preferred).</p>
+      <h3>Selectors</h3>
+      <table>
+        <tr><th>Selector</th><th>Syntax</th><th>Targets</th></tr>
+        <tr><td>Universal</td><td><code>*</code></td><td>All elements</td></tr>
+        <tr><td>Element</td><td><code>p</code></td><td>All &lt;p&gt; tags</td></tr>
+        <tr><td>Class</td><td><code>.card</code></td><td>Elements with class="card"</td></tr>
+        <tr><td>ID</td><td><code>#hero</code></td><td>Element with id="hero"</td></tr>
+        <tr><td>Descendant</td><td><code>div p</code></td><td>&lt;p&gt; inside &lt;div&gt;</td></tr>
+        <tr><td>Child</td><td><code>ul > li</code></td><td>Direct &lt;li&gt; children of &lt;ul&gt;</td></tr>
+        <tr><td>Adjacent</td><td><code>h1 + p</code></td><td>&lt;p&gt; immediately after &lt;h1&gt;</td></tr>
+        <tr><td>Attribute</td><td><code>input[type="text"]</code></td><td>Inputs with that attribute</td></tr>
+        <tr><td>Pseudo-class</td><td><code>a:hover</code>, <code>li:first-child</code></td><td>State or position-based</td></tr>
+        <tr><td>Pseudo-element</td><td><code>p::before</code>, <code>p::after</code></td><td>Virtual sub-elements</td></tr>
+      </table>
+      <div class="tip"><strong>🎯 Interview tip:</strong> CSS specificity order: <code>inline styles > ID > class/pseudo-class > element</code>. Specificity is calculated as (0,0,0,0) — (inline, id, class, element) counts.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num css-num">02</div>
+      <div class="section-title">The Box Model</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <p class="intro-text css-border">Every HTML element is a rectangular box. The box model defines how the space around elements is calculated.</p>
+      <pre><code><span class="cm">/* From inside out: */</span>
+<span class="cm">/* Content → Padding → Border → Margin */</span>
+
+.box {
+  width: <span class="num">200px</span>;       <span class="cm">/* Content area */</span>
+  padding: <span class="num">20px</span>;      <span class="cm">/* Space inside border */</span>
+  border: <span class="num">2px</span> solid red; <span class="cm">/* The border line */</span>
+  margin: <span class="num">10px</span>;       <span class="cm">/* Space outside border */</span>
+  box-sizing: border-box; <span class="cm">/* Total width = 200px */</span>
+}</code></pre>
+      <ul>
+        <li><code>box-sizing: content-box</code> (default) — width = content only; padding & border are extra</li>
+        <li><code>box-sizing: border-box</code> — width includes padding + border (recommended, more intuitive)</li>
+        <li>Margins can <strong>collapse</strong> — two vertical margins merge into the larger one</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num css-num">03</div>
+      <div class="section-title">Display & Positioning</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <h3>Display</h3>
+      <table>
+        <tr><th>Value</th><th>Behaviour</th></tr>
+        <tr><td><code>block</code></td><td>Full width, new line</td></tr>
+        <tr><td><code>inline</code></td><td>Inline flow, no width/height</td></tr>
+        <tr><td><code>inline-block</code></td><td>Inline flow but accepts width/height</td></tr>
+        <tr><td><code>none</code></td><td>Element removed from layout (invisible + no space)</td></tr>
+        <tr><td><code>flex</code></td><td>Activates Flexbox on the element</td></tr>
+        <tr><td><code>grid</code></td><td>Activates CSS Grid on the element</td></tr>
+      </table>
+      <h3>Position</h3>
+      <table>
+        <tr><th>Value</th><th>Behaviour</th></tr>
+        <tr><td><code>static</code></td><td>Default — normal document flow</td></tr>
+        <tr><td><code>relative</code></td><td>Offset from its normal position; still in flow</td></tr>
+        <tr><td><code>absolute</code></td><td>Removed from flow; positioned relative to nearest non-static ancestor</td></tr>
+        <tr><td><code>fixed</code></td><td>Stays fixed relative to viewport; removed from flow</td></tr>
+        <tr><td><code>sticky</code></td><td>Acts like relative until scroll threshold, then fixed</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num css-num">04</div>
+      <div class="section-title">Flexbox</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <p class="intro-text css-border">Flexbox is a 1D layout model that arranges items in a row or column. Applied on the <strong>parent container</strong>.</p>
+      <pre><code>.container {
+  display: flex;
+  flex-direction: row;        <span class="cm">/* row | column | row-reverse */</span>
+  justify-content: center;    <span class="cm">/* main axis alignment */</span>
+  align-items: center;        <span class="cm">/* cross axis alignment */</span>
+  flex-wrap: wrap;            <span class="cm">/* allow items to wrap */</span>
+  gap: <span class="num">16px</span>;               <span class="cm">/* spacing between items */</span>
+}
+
+.item {
+  flex: <span class="num">1</span>;                  <span class="cm">/* grow + shrink + basis */</span>
+  align-self: flex-start;     <span class="cm">/* override align-items for one */</span>
+}</code></pre>
+      <table>
+        <tr><th>justify-content</th><th>Effect on Main Axis</th></tr>
+        <tr><td><code>flex-start</code></td><td>Pack to start</td></tr>
+        <tr><td><code>flex-end</code></td><td>Pack to end</td></tr>
+        <tr><td><code>center</code></td><td>Center items</td></tr>
+        <tr><td><code>space-between</code></td><td>Equal space between items, none at edges</td></tr>
+        <tr><td><code>space-around</code></td><td>Equal space around each item</td></tr>
+        <tr><td><code>space-evenly</code></td><td>Truly equal space everywhere</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num css-num">05</div>
+      <div class="section-title">CSS Grid</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <p class="intro-text css-border">Grid is a 2D layout system — controls rows AND columns simultaneously.</p>
+      <pre><code>.grid {
+  display: grid;
+  grid-template-columns: repeat(<span class="num">3</span>, <span class="num">1fr</span>); <span class="cm">/* 3 equal columns */</span>
+  grid-template-rows: auto;
+  gap: <span class="num">20px</span>;
+}
+
+<span class="cm">/* Span across columns/rows */</span>
+.hero { grid-column: <span class="num">1</span> / <span class="num">3</span>; } <span class="cm">/* from line 1 to 3 */</span>
+.sidebar { grid-row: <span class="num">1</span> / <span class="num">3</span>; }</code></pre>
+      <div class="tip"><strong>🎯 Interview tip:</strong> "Use Flexbox for 1D layouts (a navbar, a row of cards). Use Grid for 2D layouts (full page layout, dashboards). They complement each other."</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num css-num">06</div>
+      <div class="section-title">Responsive Design & Media Queries</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">/* Mobile first: base styles for small screens */</span>
+.container { width: <span class="num">100%</span>; }
+
+<span class="cm">/* Tablet and up */</span>
+@media (min-width: <span class="num">768px</span>) {
+  .container { width: <span class="num">720px</span>; }
+}
+
+<span class="cm">/* Desktop and up */</span>
+@media (min-width: <span class="num">1024px</span>) {
+  .container { width: <span class="num">960px</span>; }
+}</code></pre>
+      <ul>
+        <li>Common breakpoints: <code>480px</code> (mobile), <code>768px</code> (tablet), <code>1024px</code> (desktop), <code>1280px</code> (wide)</li>
+        <li>Use <code>viewport meta tag</code>: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code></li>
+        <li>Use relative units: <code>%</code>, <code>em</code>, <code>rem</code>, <code>vw</code>, <code>vh</code> instead of fixed <code>px</code></li>
+        <li><code>rem</code> — relative to root font-size (16px default). <code>em</code> — relative to parent element's font-size</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num css-num">07</div>
+      <div class="section-title">CSS Variables & Animations</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">/* CSS Custom Properties (Variables) */</span>
+:root {
+  --primary-color: #7c6af7;
+  --font-size-lg: <span class="num">18px</span>;
+}
+.button { background: var(--primary-color); }
+
+<span class="cm">/* Transitions */</span>
+.btn { transition: all <span class="num">0.3s</span> ease; }
+.btn:hover { transform: scale(<span class="num">1.05</span>); }
+
+<span class="cm">/* Keyframe Animations */</span>
+@keyframes fadeIn {
+  from { opacity: <span class="num">0</span>; transform: translateY(<span class="num">20px</span>); }
+  to   { opacity: <span class="num">1</span>; transform: translateY(<span class="num">0</span>); }
+}
+.hero { animation: fadeIn <span class="num">0.6s</span> ease forwards; }</code></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<div id="tab-js" class="tab-panel">
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num js-num">01</div>
+      <div class="section-title">JS Basics — Variables & Data Types</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <p class="intro-text js-border">JavaScript is a high-level, interpreted, dynamically-typed programming language. It runs in the browser and on the server (via Node.js).</p>
+      <h3>Variable Declaration</h3>
+      <table>
+        <tr><th>Keyword</th><th>Scope</th><th>Reassignable</th><th>Redeclarable</th><th>Hoisted</th></tr>
+        <tr><td><code>var</code></td><td>Function</td><td>✅</td><td>✅</td><td>✅ (as undefined)</td></tr>
+        <tr><td><code>let</code></td><td>Block</td><td>✅</td><td>❌</td><td>✅ (TDZ error)</td></tr>
+        <tr><td><code>const</code></td><td>Block</td><td>❌</td><td>❌</td><td>✅ (TDZ error)</td></tr>
+      </table>
+      <h3>Data Types</h3>
+      <div class="chips">
+        <span class="chip chip-yellow">Number</span>
+        <span class="chip chip-green">String</span>
+        <span class="chip chip-purple">Boolean</span>
+        <span class="chip chip-red">null</span>
+        <span class="chip chip-blue">undefined</span>
+        <span class="chip chip-yellow">Symbol</span>
+        <span class="chip chip-green">BigInt</span>
+        <span class="chip chip-red">Object (non-primitive)</span>
+      </div>
+      <pre><code><span class="kw">typeof</span> <span class="str">"hello"</span>       <span class="cm">// "string"</span>
+<span class="kw">typeof</span> <span class="num">42</span>            <span class="cm">// "number"</span>
+<span class="kw">typeof</span> <span class="kw">true</span>          <span class="cm">// "boolean"</span>
+<span class="kw">typeof</span> <span class="kw">undefined</span>     <span class="cm">// "undefined"</span>
+<span class="kw">typeof</span> <span class="kw">null</span>          <span class="cm">// "object" ← famous JS bug!</span>
+<span class="kw">typeof</span> {}            <span class="cm">// "object"</span>
+<span class="kw">typeof</span> []            <span class="cm">// "object" (use Array.isArray())</span>
+<span class="kw">typeof</span> <span class="fn">function</span>(){}  <span class="cm">// "function"</span></code></pre>
+      <div class="tip"><strong>🎯 Interview tip:</strong> <code>typeof null === "object"</code> is a known bug in JS from its origin. Always use <code>Array.isArray()</code> to check arrays since <code>typeof []</code> returns <code>"object"</code>.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">02</div>
+      <div class="section-title">Functions — All Forms</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">// 1. Function Declaration (hoisted)</span>
+<span class="kw">function</span> <span class="fn">greet</span>(name) {
+  <span class="kw">return</span> <span class="str">`Hello, ${name}!`</span>;
+}
+
+<span class="cm">// 2. Function Expression (not hoisted)</span>
+<span class="kw">const</span> greet = <span class="kw">function</span>(name) { <span class="kw">return</span> <span class="str">`Hi ${name}`</span>; };
+
+<span class="cm">// 3. Arrow Function (ES6) — no own 'this'</span>
+<span class="kw">const</span> <span class="fn">greet</span> = (name) => <span class="str">`Hey ${name}`</span>;
+<span class="kw">const</span> <span class="fn">double</span> = n => n * <span class="num">2</span>;         <span class="cm">// implicit return</span>
+
+<span class="cm">// 4. Default Parameters</span>
+<span class="kw">const</span> <span class="fn">add</span> = (a, b = <span class="num">0</span>) => a + b;
+
+<span class="cm">// 5. Rest Parameters</span>
+<span class="kw">const</span> <span class="fn">sum</span> = (...nums) => nums.<span class="fn">reduce</span>((a,b) => a+b, <span class="num">0</span>);
+
+<span class="cm">// 6. IIFE (Immediately Invoked)</span>
+(<span class="kw">function</span>() { console.<span class="fn">log</span>(<span class="str">"runs immediately"</span>); })();</code></pre>
+      <div class="tip"><strong>🎯 Interview tip:</strong> Arrow functions don't have their own <code>this</code> — they inherit from the enclosing lexical scope. This is crucial for event handlers and class methods.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">03</div>
+      <div class="section-title">Arrays & Array Methods</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="kw">const</span> nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+
+<span class="cm">// map — transform each item, returns new array</span>
+nums.<span class="fn">map</span>(n => n * <span class="num">2</span>)         <span class="cm">// [2,4,6,8,10]</span>
+
+<span class="cm">// filter — keep items that pass test</span>
+nums.<span class="fn">filter</span>(n => n > <span class="num">2</span>)      <span class="cm">// [3,4,5]</span>
+
+<span class="cm">// reduce — accumulate to single value</span>
+nums.<span class="fn">reduce</span>((acc, n) => acc + n, <span class="num">0</span>)  <span class="cm">// 15</span>
+
+<span class="cm">// find / findIndex</span>
+nums.<span class="fn">find</span>(n => n > <span class="num">3</span>)        <span class="cm">// 4</span>
+nums.<span class="fn">findIndex</span>(n => n > <span class="num">3</span>)   <span class="cm">// 3</span>
+
+<span class="cm">// forEach — side effect iteration (no return)</span>
+nums.<span class="fn">forEach</span>(n => console.<span class="fn">log</span>(n));
+
+<span class="cm">// some / every</span>
+nums.<span class="fn">some</span>(n => n > <span class="num">4</span>)        <span class="cm">// true</span>
+nums.<span class="fn">every</span>(n => n > <span class="num">0</span>)       <span class="cm">// true</span>
+
+<span class="cm">// flat / flatMap</span>
+[<span class="num">1</span>, [<span class="num">2</span>, [<span class="num">3</span>]]].<span class="fn">flat</span>(<span class="num">2</span>)          <span class="cm">// [1,2,3]</span>
+
+<span class="cm">// Spread & Destructuring</span>
+<span class="kw">const</span> copy = [...nums];
+<span class="kw">const</span> [first, second, ...rest] = nums;</code></pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">04</div>
+      <div class="section-title">Objects & ES6 Features</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">// Object literal</span>
+<span class="kw">const</span> user = { name: <span class="str">"Alice"</span>, age: <span class="num">25</span>, city: <span class="str">"Delhi"</span> };
+
+<span class="cm">// Destructuring</span>
+<span class="kw">const</span> { name, age } = user;
+<span class="kw">const</span> { name: userName } = user;   <span class="cm">// rename on destructure</span>
+
+<span class="cm">// Spread</span>
+<span class="kw">const</span> updated = { ...user, age: <span class="num">26</span> };
+
+<span class="cm">// Optional Chaining (?.) — ES2020</span>
+user?.address?.city   <span class="cm">// undefined instead of error</span>
+
+<span class="cm">// Nullish Coalescing (??) — ES2020</span>
+<span class="kw">const</span> name = user.name ?? <span class="str">"Guest"</span>;  <span class="cm">// only null/undefined</span>
+
+<span class="cm">// Shorthand properties & computed keys</span>
+<span class="kw">const</span> x = <span class="num">10</span>, y = <span class="num">20</span>;
+<span class="kw">const</span> point = { x, y };             <span class="cm">// { x: 10, y: 20 }</span>
+
+<span class="cm">// Object methods</span>
+Object.<span class="fn">keys</span>(user)    <span class="cm">// ["name","age","city"]</span>
+Object.<span class="fn">values</span>(user)  <span class="cm">// ["Alice",25,"Delhi"]</span>
+Object.<span class="fn">entries</span>(user) <span class="cm">// [["name","Alice"],...]</span></code></pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">05</div>
+      <div class="section-title">DOM Manipulation</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">// Selecting Elements</span>
+document.<span class="fn">getElementById</span>(<span class="str">"id"</span>)
+document.<span class="fn">querySelector</span>(<span class="str">".class"</span>)       <span class="cm">// first match</span>
+document.<span class="fn">querySelectorAll</span>(<span class="str">"div"</span>)      <span class="cm">// NodeList of all</span>
+
+<span class="cm">// Changing Content</span>
+el.textContent = <span class="str">"Hello"</span>;              <span class="cm">// plain text (safe)</span>
+el.innerHTML = <span class="str">"&lt;b&gt;Bold&lt;/b&gt;"</span>;          <span class="cm">// parses HTML (XSS risk)</span>
+
+<span class="cm">// Changing Styles & Classes</span>
+el.style.color = <span class="str">"red"</span>;
+el.classList.<span class="fn">add</span>(<span class="str">"active"</span>);
+el.classList.<span class="fn">remove</span>(<span class="str">"hidden"</span>);
+el.classList.<span class="fn">toggle</span>(<span class="str">"open"</span>);
+
+<span class="cm">// Attributes</span>
+el.<span class="fn">setAttribute</span>(<span class="str">"src"</span>, <span class="str">"img.png"</span>);
+el.<span class="fn">getAttribute</span>(<span class="str">"href"</span>);
+
+<span class="cm">// Creating & Appending</span>
+<span class="kw">const</span> div = document.<span class="fn">createElement</span>(<span class="str">"div"</span>);
+div.textContent = <span class="str">"New element"</span>;
+document.body.<span class="fn">appendChild</span>(div);
+
+<span class="cm">// Removing</span>
+el.<span class="fn">remove</span>();</code></pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">06</div>
+      <div class="section-title">Events</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">// addEventListener (preferred)</span>
+btn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="kw">function</span>(e) {
+  e.<span class="fn">preventDefault</span>();   <span class="cm">// stop default action (e.g. form submit)</span>
+  e.<span class="fn">stopPropagation</span>(); <span class="cm">// stop event from bubbling up</span>
+  console.<span class="fn">log</span>(e.target); <span class="cm">// element that was clicked</span>
+});
+
+<span class="cm">// Event Delegation — attach one listener to parent</span>
+document.<span class="fn">querySelector</span>(<span class="str">"ul"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, e => {
+  <span class="kw">if</span> (e.target.tagName === <span class="str">"LI"</span>) console.<span class="fn">log</span>(e.target.textContent);
+});</code></pre>
+      <h3>Common Events</h3>
+      <div class="chips">
+        <span class="chip chip-yellow">click</span>
+        <span class="chip chip-yellow">dblclick</span>
+        <span class="chip chip-yellow">mouseover</span>
+        <span class="chip chip-yellow">mouseout</span>
+        <span class="chip chip-green">keydown</span>
+        <span class="chip chip-green">keyup</span>
+        <span class="chip chip-green">keypress</span>
+        <span class="chip chip-blue">submit</span>
+        <span class="chip chip-blue">input</span>
+        <span class="chip chip-blue">change</span>
+        <span class="chip chip-purple">DOMContentLoaded</span>
+        <span class="chip chip-purple">load</span>
+        <span class="chip chip-red">scroll</span>
+        <span class="chip chip-red">resize</span>
+      </div>
+      <div class="tip"><strong>🎯 Interview tip:</strong> Event <strong>bubbling</strong> — events bubble up from child → parent → document. Event <strong>capturing</strong> — fires from document down to target (set 3rd arg of addEventListener to <code>true</code>).</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">07</div>
+      <div class="section-title">Asynchronous JS — Promises & Async/Await</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">// Callbacks (old way — callback hell)</span>
+<span class="fn">fetchData</span>(url, <span class="kw">function</span>(data) {
+  <span class="fn">processData</span>(data, <span class="kw">function</span>(result) { <span class="cm">// nested...</span>
+  });
+});
+
+<span class="cm">// Promise</span>
+<span class="fn">fetch</span>(url)
+  .<span class="fn">then</span>(res => res.<span class="fn">json</span>())
+  .<span class="fn">then</span>(data => console.<span class="fn">log</span>(data))
+  .<span class="fn">catch</span>(err => console.<span class="fn">error</span>(err))
+  .<span class="fn">finally</span>(() => console.<span class="fn">log</span>(<span class="str">"done"</span>));
+
+<span class="cm">// Async/Await (ES2017) — syntactic sugar over Promises</span>
+<span class="kw">const</span> <span class="fn">getData</span> = <span class="kw">async</span> () => {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(url);
+    <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+    console.<span class="fn">log</span>(data);
+  } <span class="kw">catch</span> (err) {
+    console.<span class="fn">error</span>(err);
+  }
+};
+
+<span class="cm">// Promise.all — run in parallel</span>
+<span class="kw">const</span> [a, b] = <span class="kw">await</span> Promise.<span class="fn">all</span>([<span class="fn">fetch</span>(url1), <span class="fn">fetch</span>(url2)]);</code></pre>
+      <div class="tip"><strong>🎯 Interview tip:</strong> <code>Promise.all</code> — rejects if ANY promise fails. <code>Promise.allSettled</code> — waits for all, never rejects. <code>Promise.race</code> — resolves/rejects as soon as first one settles.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">08</div>
+      <div class="section-title">Closures, Hoisting & the Event Loop</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <h3>Closures</h3>
+      <pre><code><span class="cm">// A function that remembers its outer scope</span>
+<span class="kw">function</span> <span class="fn">counter</span>() {
+  <span class="kw">let</span> count = <span class="num">0</span>;
+  <span class="kw">return</span> () => ++count;  <span class="cm">// inner fn has closure over count</span>
+}
+<span class="kw">const</span> inc = <span class="fn">counter</span>();
+<span class="fn">inc</span>(); <span class="cm">// 1</span>
+<span class="fn">inc</span>(); <span class="cm">// 2</span></code></pre>
+      <h3>Hoisting</h3>
+      <ul>
+        <li><code>var</code> declarations are hoisted to the top of their scope and initialized as <code>undefined</code></li>
+        <li><code>let</code> and <code>const</code> are hoisted but NOT initialized — accessing them before declaration throws a <strong>ReferenceError</strong> (Temporal Dead Zone)</li>
+        <li>Function <strong>declarations</strong> are fully hoisted (callable before definition)</li>
+        <li>Function <strong>expressions</strong> are NOT hoisted</li>
+      </ul>
+      <h3>Event Loop</h3>
+      <ul>
+        <li>JS is single-threaded — one task at a time on the <strong>Call Stack</strong></li>
+        <li>Async tasks (timers, fetch) are offloaded to Web APIs</li>
+        <li>When complete, callbacks are queued in the <strong>Callback Queue</strong> (macrotask) or <strong>Microtask Queue</strong> (Promises)</li>
+        <li>The <strong>Event Loop</strong> checks: if Call Stack is empty → push from Microtask queue first, then Callback queue</li>
+        <li>Microtasks (Promises) always run before macrotasks (setTimeout)</li>
+      </ul>
+      <div class="tip"><strong>🎯 Interview tip:</strong> Classic question — <code>setTimeout(() => console.log("A"), 0)</code> still runs after synchronous code and after Promise callbacks resolve.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num js-num">09</div>
+      <div class="section-title">Local Storage, JSON & Modules</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <pre><code><span class="cm">// JSON</span>
+JSON.<span class="fn">stringify</span>({ name: <span class="str">"Alice"</span> })   <span class="cm">// '{"name":"Alice"}'</span>
+JSON.<span class="fn">parse</span>(<span class="str">'{"name":"Alice"}'</span>)        <span class="cm">// { name: "Alice" }</span>
+
+<span class="cm">// localStorage — persists after tab close</span>
+localStorage.<span class="fn">setItem</span>(<span class="str">"user"</span>, JSON.<span class="fn">stringify</span>(userData));
+<span class="kw">const</span> user = JSON.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">"user"</span>));
+localStorage.<span class="fn">removeItem</span>(<span class="str">"user"</span>);
+localStorage.<span class="fn">clear</span>();
+
+<span class="cm">// ES6 Modules</span>
+<span class="cm">// math.js</span>
+<span class="kw">export const</span> <span class="fn">add</span> = (a,b) => a+b;
+<span class="kw">export default</span> <span class="kw">function</span> <span class="fn">multiply</span>(a,b) { <span class="kw">return</span> a*b; }
+
+<span class="cm">// main.js</span>
+<span class="kw">import</span> multiply, { add } <span class="kw">from</span> <span class="str">'./math.js'</span>;</code></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ===== INTERVIEW Q&A ===== -->
+<div id="tab-interview" class="tab-panel">
+  <div class="tip" style="margin-bottom:1.5rem">Click any question to reveal the answer. These are the most-asked questions in frontend developer placement interviews.</div>
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num html-num">📋</div>
+      <div class="section-title">HTML Interview Questions</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <div class="qa-block" id="qa-html"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num css-num">📋</div>
+      <div class="section-title">CSS Interview Questions</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <div class="qa-block" id="qa-css"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-num js-num">📋</div>
+      <div class="section-title">JavaScript Interview Questions</div>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <div class="qa-block" id="qa-js"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+const qaData = {
+  html: [
+    { q: "What is the difference between <div> and <span>?", a: "<div> is a block-level element — it starts on a new line and takes up full width. <span> is an inline element — it sits within text flow. Use <div> for layout sections, <span> for styling a piece of text." },
+    { q: "What is the difference between <strong> and <b>?", a: "<strong> has semantic meaning — it marks text as important (useful for screen readers, SEO). <b> is purely presentational bold styling. Prefer <strong> for meaningful emphasis." },
+    { q: "What are data attributes in HTML?", a: "Custom attributes prefixed with 'data-' let you store extra info on elements. Example: <div data-user-id='123'>. Access in JS via: element.dataset.userId. Used for attaching metadata without misusing standard attributes." },
+    { q: "What is the difference between id and class?", a: "id must be unique — only one element can have a given id per page. class can be reused on multiple elements. Use id for unique elements (header, modal), class for reusable styles and groups." },
+    { q: "What is the purpose of <meta> tags?", a: "Meta tags provide metadata about the HTML document — charset (character encoding), viewport (responsive behaviour), description (SEO snippet), keywords, author, and Open Graph tags for social sharing previews." },
+    { q: "What is the difference between GET and POST in forms?", a: "GET appends data to the URL (visible, bookmarkable, cached, max ~2000 chars). POST sends data in the request body (not visible in URL, no size limit, used for sensitive or large data like passwords or file uploads)." },
+    { q: "What is semantic HTML and why is it important?", a: "Semantic HTML uses tags that describe their meaning (<article>, <nav>, <header>, etc.) rather than generic containers. It improves: (1) Accessibility — screen readers navigate by landmarks. (2) SEO — search engines understand content structure. (3) Maintainability — code is self-documenting." },
+  ],
+  css: [
+    { q: "What is the CSS Box Model?", a: "Every element is a box consisting of (inside out): Content → Padding → Border → Margin. With box-sizing: content-box (default), width refers to content only. With box-sizing: border-box, width includes padding and border — this is recommended for predictable layouts." },
+    { q: "What is CSS specificity?", a: "Specificity determines which CSS rule wins when multiple rules target the same element. Priority order: !important > inline styles > ID selectors > Class/pseudo-class/attribute selectors > Element selectors > Universal selector. Calculated as (inline, id, class, element) counts." },
+    { q: "What is the difference between visibility: hidden and display: none?", a: "visibility: hidden hides the element but it still occupies space in the layout. display: none removes it from the layout completely — no space, no rendering. A third option is opacity: 0, which makes it invisible but still takes space and remains interactive." },
+    { q: "What is the difference between Flexbox and Grid?", a: "Flexbox is 1-dimensional — it lays items along a single axis (row OR column) and is best for components like navbars, button groups, card rows. CSS Grid is 2-dimensional — controls rows AND columns simultaneously, best for full page layouts and complex positioning." },
+    { q: "What is z-index and when does it work?", a: "z-index controls stacking order along the Z-axis (which element appears on top). It only works on positioned elements (position: relative, absolute, fixed, sticky). Higher z-index = closer to viewer. Elements in the same stacking context compete against each other." },
+    { q: "What are CSS pseudo-elements vs pseudo-classes?", a: "Pseudo-classes target an element's state: :hover, :focus, :first-child, :nth-child(). Pseudo-elements create virtual sub-elements: ::before (insert content before), ::after (after), ::placeholder (style placeholder text), ::selection (highlight color). Pseudo-classes use : and pseudo-elements use ::." },
+    { q: "What is the difference between em, rem, px, vw/vh?", a: "px — absolute pixels. em — relative to the parent element's font-size (compounds). rem — relative to root (<html>) font-size (default 16px); more predictable than em. vw/vh — percentage of viewport width/height (100vw = full width). Use rem for typography, % or vw for responsive layouts." },
+  ],
+  js: [
+    { q: "What is the difference between == and ===?", a: "== is loose equality — compares values after type coercion (0 == '0' is true, null == undefined is true). === is strict equality — compares value AND type with no coercion (0 === '0' is false). Always prefer === to avoid unexpected coercion bugs." },
+    { q: "What is a closure?", a: "A closure is a function that has access to variables from its outer (enclosing) scope even after that outer function has returned. Example: a counter factory returns an inner function that remembers and increments the count variable. Used for data encapsulation and factory functions." },
+    { q: "What is the difference between null and undefined?", a: "undefined means a variable has been declared but not assigned a value — it's the default empty state. null is an explicit assignment meaning 'no value' or 'empty object'. typeof undefined === 'undefined', but typeof null === 'object' (a legacy JS bug)." },
+    { q: "Explain event bubbling and event delegation.", a: "Bubbling: when an event fires on an element, it propagates up through ancestors to document. Delegation: attach ONE listener to a parent, and use event.target to determine which child was clicked. Efficient for large lists — no need to attach listeners to each item, also works for dynamically added elements." },
+    { q: "What is the difference between let, var, and const?", a: "var is function-scoped and hoisted (initialized as undefined). let and const are block-scoped and in the Temporal Dead Zone before declaration. const cannot be reassigned (but object/array contents can still be mutated). Prefer const by default, use let when you need to reassign." },
+    { q: "What is a Promise? What are its states?", a: "A Promise represents an eventual completion or failure of an async operation. States: Pending (initial), Fulfilled (resolved successfully), Rejected (failed). Methods: .then() for success, .catch() for errors, .finally() for cleanup. async/await is syntactic sugar that makes Promises read like synchronous code." },
+    { q: "What is the Event Loop in JavaScript?", a: "JS is single-threaded. The Call Stack executes code. Async tasks (fetch, setTimeout) are offloaded to Web APIs. On completion, their callbacks enter the Callback Queue (macrotasks) or Microtask Queue (Promise callbacks). The Event Loop pushes from microtask queue first, then macro, when the Call Stack is empty." },
+    { q: "What is the difference between map(), filter(), and forEach()?", a: "map() transforms each element and returns a NEW array of same length. filter() tests each element and returns a NEW array with only passing elements. forEach() iterates for side effects and returns undefined — it does NOT create a new array. map and filter are pure (no mutation); forEach is for side effects." },
+    { q: "What is 'this' in JavaScript?", a: "this refers to the context in which a function is called. In global scope: window (browser). In an object method: the object. In a regular function: undefined (strict mode) or window. In an arrow function: inherits from enclosing scope — arrow functions have NO own this. In a class: the instance." },
+  ]
+};
+
+function buildQA() {
+  ['html','css','js'].forEach(type => {
+    const container = document.getElementById('qa-' + type);
+    qaData[type].forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'qa-item';
+      div.innerHTML = `
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span>Q${i+1}. ${item.q}</span>
+          <span class="arrow">›</span>
+        </div>
+        <div class="qa-a">${item.a}</div>
+      `;
+      container.appendChild(div);
+    });
+  });
+}
+
+function toggleQA(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleSection(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+buildQA();
+</script>
+</body>
+</html>
